@@ -1,0 +1,40 @@
+body { margin: 0; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #1f2329; }
+.check-page { max-width: 960px; margin: 24px auto; padding: 20px; background: #fff; border-radius: 8px; }
+.page-head { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid #e7e7e7; padding-bottom: 16px; }
+.page-head h1 { font-size: 20px; margin: 0; }
+.progress { font-weight: 600; color: #0052d9; }
+.only-red { display: flex; align-items: center; gap: 8px; }
+.block-alerts { margin: 16px 0; display: grid; gap: 8px; }
+.field-list { display: grid; gap: 10px; margin-bottom: 24px; }
+.field-row { border: 1px solid #e7e7e7; border-radius: 6px; padding: 12px 16px; background: #fff; scroll-margin-top: 20px; }
+.field-row.flagged { background: #fff0f0; border-color: #f5b5b5; }
+.field-row.confirmed { background: #f0faf3; border-color: #b5dfc0; }
+.field-row[data-navigated="true"] { outline: 2px solid #0052d9; }
+.field-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.field-name { font-weight: 600; }
+.flag-chips { display: inline-flex; gap: 6px; }
+.field-value { color: #333; }
+.empty-value { color: #999; font-style: italic; }
+.candidates { margin-top: 6px; font-size: 13px; color: #666; display: flex; gap: 8px; align-items: center; }
+.candidate-btn { cursor: pointer; border: 1px dashed #bbb; background: #fff; border-radius: 4px; padding: 2px 6px; }
+.row-actions { margin-top: 10px; display: flex; gap: 8px; }
+.modify-panel { margin-top: 10px; padding: 12px; background: #fff; border: 1px dashed #bbb; border-radius: 4px; display: grid; gap: 10px; }
+.reason-row { display: flex; align-items: center; gap: 12px; }
+.required { color: #d54941; }
+.modify-actions { display: flex; gap: 8px; align-items: center; }
+.save-hint { color: #888; font-size: 12px; }
+.uscc-wrap, .amount-wrap { display: inline-flex; align-items: center; gap: 8px; }
+.uscc-hint { font-size: 12px; }
+.uscc-hint.ok { color: #2ba471; }
+.uscc-hint.bad { color: #d54941; }
+.yuan-sign { font-weight: 600; }
+.cents-hint { font-size: 12px; color: #666; }
+.subtable { margin: 20px 0; }
+.subtable h3 { font-size: 15px; }
+.subtable table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.subtable th, .subtable td { border: 1px solid #e7e7e7; padding: 6px 8px; text-align: left; }
+.subtable td.ok { color: #2ba471; }
+.subtable td.bad { color: #d54941; font-weight: 600; }
+.subtable-total { margin-top: 8px; display: flex; gap: 12px; align-items: center; font-size: 13px; }
+.submit-zone { margin-top: 24px; border-top: 1px solid #e7e7e7; padding-top: 16px; }
+.submit-zone pre { background: #f5f7fa; padding: 12px; overflow: auto; max-height: 280px; font-size: 12px; }

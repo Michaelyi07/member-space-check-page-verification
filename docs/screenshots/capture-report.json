@@ -1,0 +1,39 @@
+{
+  "os": "win32",
+  "node": "v22.22.2",
+  "chrome": "157.0.8103.80",
+  "captured_at": "2026-11-25T14:26:16.182Z",
+  "flag_screenshots": [
+    {
+      "flag": "low_confidence",
+      "screenshot": "flag-low_confidence.png",
+      "label": "低置信度 72%"
+    },
+    {
+      "flag": "case_mismatch",
+      "screenshot": "flag-case_mismatch.png",
+      "label": "大小写不一致"
+    },
+    {
+      "flag": "check_digit_fail",
+      "screenshot": "flag-check_digit_fail.png",
+      "label": "校验位失败"
+    },
+    {
+      "flag": "total_mismatch",
+      "screenshot": "flag-total_mismatch.png",
+      "label": "合计不符"
+    },
+    {
+      "flag": "missing_address",
+      "screenshot": "flag-missing_address.png",
+      "label": "地址缺失"
+    },
+    {
+      "flag": "date_conflict",
+      "screenshot": "flag-date_conflict.png",
+      "label": "日期冲突"
+    }
+  ],
+  "rows_after_filter_on": 6
+}

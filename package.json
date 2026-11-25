@@ -1,0 +1,33 @@
+{
+  "name": "check-page-verification",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "DOC-021 check-page verification interaction: low-confidence red labeling, item-by-item confirm/modify. All data fictional.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4178",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "screenshots": "node tools/capture-screenshots.mjs"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tdesign-react": "1.10.3"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.1.0",
+    "@types/node": "^26.6.4",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@vitejs/plugin-react": "4.3.4",
+    "jsdom": "25.0.1",
+    "playwright-core": "1.49.1",
+    "typescript": "5.7.3",
+    "vite": "^6.4.1",
+    "vitest": "^3.2.4"
+  }
+}
