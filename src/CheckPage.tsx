@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Button, Select, Switch, Tag, Alert, Input } from 'tdesign-react';
+import { Button, Select, Switch, Tag, Alert, DatePicker } from 'tdesign-react';
 import { FLAGS_COPY, MODIFY_REASONS, flagLabel } from './flags-copy';
 import { checkUscc, yuanToCents } from './money';
 import type {
@@ -71,7 +71,18 @@ function ValueEditor({
     );
   }
   if (t === 'date') {
-    return <input value={value} onChange={(e) => onChange(e.target.value)} placeholder="YYYY-MM-DD" data-testid={`input-${field.id}`} />;
+    // TDesign DatePicker，默认 valueType YYYY-MM-DD，与 mock 数据格式一致
+    return (
+      <span className="date-wrap">
+        <DatePicker
+          value={value}
+          allowInput
+          clearable
+          placeholder="YYYY-MM-DD"
+          onChange={(v: unknown) => onChange(typeof v === 'string' ? v : '')}
+        />
+      </span>
+    );
   }
   if (t === 'amount') {
     return (
@@ -288,8 +299,9 @@ export default function CheckPage({ data, onSubmit }: CheckPageProps) {
     <div className="check-page" data-testid="check-page">
       <header className="page-head">
         <h1>合同字段核对 · 右栏</h1>
-        <div className="progress" data-testid="progress">
-          已确认 {confirmed} / 共 {fields.length}，待处理红字段 {redCount}
+        <div className="progress" data-testid="progress" role="progressbar" aria-valuemin={0} aria-valuemax={fields.length} aria-valuenow={confirmed}>
+          <span className="progress-track"><span className="progress-fill" data-testid="progress-fill" style={{ width: `${fields.length ? Math.round((confirmed / fields.length) * 100) : 0}%` }} /></span>
+          <span>已确认 {confirmed} / 共 {fields.length}，待处理红字段 {redCount}</span>
         </div>
         <label className="only-red">
           <Switch data-testid="only-red-switch" value={onlyRed} onChange={(v) => setOnlyRed(Boolean(v))} />

@@ -2,7 +2,7 @@
   "os": "win32",
   "node": "v22.22.2",
   "chrome": "157.0.8103.80",
-  "captured_at": "2026-11-25T14:26:16.182Z",
+  "captured_at": "2026-11-25T16:23:25.129Z",
   "flag_screenshots": [
     {
       "flag": "low_confidence",

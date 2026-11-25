@@ -51,7 +51,7 @@ export const MOCK: CheckPageData = {
   ],
   payment_nodes: [
     { id: 'p-1', label: '预付款', amount_yuan: '370.37', ratio: '30', flags: [{ key: 'total_mismatch' }] },
-    { id: 'p-2', label: '尾款', amount_yuan: '864.19', ratio: '70', flags: [] },
+    { id: 'p-2', label: '尾款', amount_yuan: '900.00', ratio: '70', flags: [] },
   ],
   benefits: [
     { id: 'b-1', label: '优先对接权益', amount_yuan: '246.91', ratio: '20', flags: [] },

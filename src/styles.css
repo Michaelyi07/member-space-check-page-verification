@@ -2,7 +2,9 @@ body { margin: 0; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", san
 .check-page { max-width: 960px; margin: 24px auto; padding: 20px; background: #fff; border-radius: 8px; }
 .page-head { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid #e7e7e7; padding-bottom: 16px; }
 .page-head h1 { font-size: 20px; margin: 0; }
-.progress { font-weight: 600; color: #0052d9; }
+.progress { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #0052d9; }
+.progress-track { display: inline-block; width: 160px; height: 8px; background: #e7e7e7; border-radius: 4px; overflow: hidden; }
+.progress-fill { display: block; height: 100%; background: #0052d9; transition: width .2s; }
 .only-red { display: flex; align-items: center; gap: 8px; }
 .block-alerts { margin: 16px 0; display: grid; gap: 8px; }
 .field-list { display: grid; gap: 10px; margin-bottom: 24px; }

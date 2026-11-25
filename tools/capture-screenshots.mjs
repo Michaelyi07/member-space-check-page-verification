@@ -75,4 +75,9 @@ writeFileSync(resolve(OUT, 'capture-report.json'), JSON.stringify(env, null, 2))
 console.log(JSON.stringify(env, null, 2));
 
 await browser.close();
-server.kill();
+// Windows shell:true 下 server.pid 是 shell 进程，kill() 杀不掉 vite 子进程，
+// stdio 管道不关会导致本进程挂起——用 taskkill 树杀并显式退出。
+try {
+  spawn('taskkill', ['/pid', String(server.pid), '/T', '/F'], { stdio: 'ignore', shell: true });
+} catch { /* best effort */ }
+process.exit(0);

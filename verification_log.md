@@ -54,3 +54,42 @@ dist/assets/index-Y3KVlhS-.js   359.48 kB │ gzip: 116.13 kB
 - `capture-report.json` — OS/Node/Chrome 版本 + 捕获时间 + 过滤后行数（rows_after_filter_on: 6）
 
 截图用 playwright-core 驱动系统 Chrome 157.0.8103.80（真实渲染，非 jsdom）。
+
+## 4. 独立上下文审查修复轮（2026-11-26 00:20，复审后追加）
+
+独立审查代理（全新会话，仅订单原文+仓库）判定 FAIL：2 major + 5 minor，逐项修复：
+
+- **major-1**（src/CheckPage.tsx）：value_type=date 原为普通文本 `<input>`，已改为 TDesign `DatePicker`（allowInput/clearable，valueType 默认 YYYY-MM-DD）；新增测试断言修改面板内存在 `.t-date-picker`。
+- **major-2**（tests/acceptance.test.tsx）：AC2「回退到原值再禁用」原断言只改到别的值未真回退；已改为改到 `91310001MA01KTX936` → 选原因 enabled → 回退原值 `91310001MA01KTX937` → 断言 disabled。
+- **minor-1**：进度条加数字断言（已确认 1 / 共 8，待处理红字段 6，aria-valuenow=1，fill 宽 13%）+ 可视化 fill 条。
+- **minor-2**：新增子表交互测试：删行/加行、金额合计 1270.37 vs 总额 1234.56 行内「不一致」。
+- **minor-3**：新增告警定位测试：点击 navigate-f-03 → 字段行 data-navigated=true。
+- **minor-4**（src/mock.ts）：p-2 尾款 864.19→900.00，使 mock 数据与 block 告警「付款节点金额合计与合同总额不一致」自洽（370.37+900.00=1270.37≠1234.56）；权益表仍为合计一致的对照态。
+- **minor-5**：delivery_brief.md 组件名改为真实文件/行级指引。
+
+修复后复跑（真实输出）：
+
+```
+> check-page-verification@1.0.0 test
+> vitest run
+
+ ✓ tests/acceptance.test.tsx (18 tests) 1107ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  00:21:05
+   Duration  46.64s
+```
+
+```
+> check-page-verification@1.0.0 build
+> tsc --noEmit && vite build
+
+vite v6.4.3 building for production...
+✓ 2184 modules transformed
+dist/assets/index-fI9d_Af2.css  166.58 kB │ gzip:  17.50 kB
+dist/assets/index-DXp0yx4-.js   428.86 kB │ gzip: 136.65 kB
+✓ built in 36.74s
+```
+
+截图已按新 UI 重新捕获（`npm run screenshots`）。

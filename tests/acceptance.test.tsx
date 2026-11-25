@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -71,11 +71,12 @@ describe('AC2 — save disabled until modification reason selected', () => {
     render(<CheckPage data={MOCK} />);
     fireEvent.click(screen.getByTestId('modify-f-03-trigger'));
     const input = screen.getByTestId('input-f-03');
-    fireEvent.change(input, { target: { value: '91310001MA01KTX93X' } });
+    const original = MOCK.fields.find((f) => f.id === 'f-03')!.value; // 91310001MA01KTX937
+    fireEvent.change(input, { target: { value: '91310001MA01KTX936' } });
     fireEvent.change(screen.getByTestId('reason-f-03'), { target: { value: 'other' } });
-    expect(screen.getByTestId("save-f-03")).not.toBeDisabled();
-    fireEvent.change(input, { target: { value: '91310001MA01KTX93X-changed' } });
     expect(screen.getByTestId('save-f-03')).not.toBeDisabled();
+    fireEvent.change(input, { target: { value: original } }); // 回退到原值 → 保存再次禁用
+    expect(screen.getByTestId('save-f-03')).toBeDisabled();
   });
 });
 
@@ -139,9 +140,42 @@ describe('Scope sentences — implementation not existence', () => {
     expect(screen.getByTestId('uscc-hint')).toHaveTextContent('校验位通过');
   });
 
-  it('progress bar shows confirmed/total/pending counts', () => {
-    render(<CheckPage data={MOCK} />);
-    expect(screen.getByTestId('progress').textContent).toMatch(/已确认 \d+ \/ 共 \d+，待处理红字段 \d+/);
+  it('progress bar shows concrete confirmed/total/pending counts with fill bar', () => {
+    const { container } = render(<CheckPage data={MOCK} />);
+    const progress = screen.getByTestId('progress');
+    expect(progress.getAttribute('role')).toBe('progressbar');
+    expect(progress.getAttribute('aria-valuenow')).toBe('1');
+    expect(progress.textContent).toContain('已确认 1 / 共 8');
+    expect(progress.textContent).toContain('待处理红字段 6');
+    const fill = container.querySelector('[data-testid="progress-fill"]') as HTMLElement;
+    expect(fill.style.width).toBe('13%'); // Math.round(1/8*100)
+  });
+
+  it('date field renders TDesign DatePicker for value_type=date', () => {
+    const { container } = render(<CheckPage data={MOCK} />);
+    fireEvent.click(screen.getByTestId('modify-f-06-trigger'));
+    expect(container.querySelector('[data-testid="modify-f-06"] .t-date-picker')).not.toBeNull();
+  });
+
+  it('block alert navigation marks the target field as navigated', () => {
+    const { container } = render(<CheckPage data={MOCK} />);
+    expect(container.querySelector('[data-testid="field-f-03"]')?.getAttribute('data-navigated')).toBeNull();
+    fireEvent.click(screen.getByTestId('navigate-f-03'));
+    expect(container.querySelector('[data-testid="field-f-03"]')?.getAttribute('data-navigated')).toBe('true');
+  });
+
+  it('subtable add/delete rows updates live sum vs grand-total mismatch', () => {
+    const { container } = render(<CheckPage data={MOCK} />);
+    // 初始：370.37 + 900.00 = 1270.37 ≠ 1234.56 → 行内实时校验「不一致」
+    expect(screen.getByTestId('total-付款节点').textContent).toContain('金额合计 1270.37 / 总额 1234.56');
+    expect(container.querySelector('[data-testid="row-p-1"] td.bad')?.textContent).toContain('不一致');
+    // 删除 p-2 行 → 合计变为 370.37
+    fireEvent.click(within(container.querySelector('[data-testid="row-p-2"]') as HTMLElement).getByText('删除'));
+    expect(screen.getByTestId('total-付款节点').textContent).toContain('金额合计 370.37 / 总额 1234.56');
+    // 新增行 → 行数回到 2，新行金额 0.00
+    fireEvent.click(within(screen.getByTestId('subtable-付款节点')).getByText('新增行'));
+    expect(within(screen.getByTestId('subtable-付款节点')).getAllByTestId(/^row-/).length).toBe(2);
+    expect(screen.getByTestId('total-付款节点').textContent).toContain('金额合计 370.37 / 总额 1234.56');
   });
 
   it('block problems render as alerts with navigation buttons', () => {
